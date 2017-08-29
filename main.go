@@ -33,8 +33,7 @@ type Data struct {
 	StackConfigType              string    `json:"stack_config_type"`
 	StackIdentifier              string    `json:"stack_identifier"`
 	OriginalBuildParams          struct {
-		Branch     string `json:"branch"`
-		WorkflowID string `json:"workflow_id"`
+		Branch string `json:"branch"`
 	} `json:"original_build_params"`
 	PullRequestID           int    `json:"pull_request_id"`
 	PullRequestTargetBranch string `json:"pull_request_target_branch"`
@@ -118,7 +117,7 @@ func main() {
 	json, _ := json.Marshal(AbortQuery{AbortReason: "obsolete"})
 
 	for _, v := range runningTasks {
-		if (v.OriginalBuildParams.Branch == sourceBranch) && (v.OriginalBuildParams.WorkflowID == workflowID) {
+		if (v.Branch == sourceBranch) && (v.TriggeredWorkflow == workflowID) {
 			fmt.Println("Other running task  = %s, triggered at", v.Slug, v.TriggeredAt)
 			fmt.Println("Status  = %s (%s)", v.Status, v.StatusText)
 
