@@ -73,6 +73,7 @@ func main() {
 	token := os.Getenv("token")
 	appSlug := os.Getenv("BITRISE_APP_SLUG")
 	currentSlug := os.Getenv("BITRISE_BUILD_SLUG")
+	currentTriggered := time.Unix(os.Getenv("BITRISE_BUILD_TRIGGER_TIMESTAMP"), 0)
 	sourceBranch := os.Getenv("BITRISE_GIT_BRANCH")
 	workflowID := os.Getenv("BITRISE_TRIGGERED_WORKFLOW_ID")
 
@@ -111,7 +112,7 @@ func main() {
 	})
 	var runningTasks = Filter(otherTasks, func(v Data) bool {
 		// verif si job different de celui ci
-		return v.Status == 0
+		return v.Status == 0 && v.TriggeredAt.Before(currentTriggered)
 	})
 
 	json, _ := json.Marshal(AbortQuery{AbortReason: "obsolete"})
