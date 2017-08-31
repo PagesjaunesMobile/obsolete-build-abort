@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -72,7 +73,8 @@ func main() {
 	token := os.Getenv("token")
 	appSlug := os.Getenv("BITRISE_APP_SLUG")
 	currentSlug := os.Getenv("BITRISE_BUILD_SLUG")
-	currentTriggered := time.Unix(os.Getenv("BITRISE_BUILD_TRIGGER_TIMESTAMP"), 0)
+	s, _ := strconv.ParseInt(os.Getenv("BITRISE_BUILD_TRIGGER_TIMESTAMP"), 10, 64)
+	currentTriggered := time.Unix(s, 0)
 	sourceBranch := os.Getenv("BITRISE_GIT_BRANCH")
 	workflowID := os.Getenv("BITRISE_TRIGGERED_WORKFLOW_ID")
 
