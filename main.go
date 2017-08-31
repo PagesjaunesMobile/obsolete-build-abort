@@ -52,7 +52,6 @@ type Builds struct {
 
 func Filter(vs []Data, f func(Data) bool) []Data {
 	vsf := make([]Data, 0)
-	fmt.Println(vs)
 
 	for _, v := range vs {
 
@@ -119,9 +118,12 @@ func main() {
 
 	for _, v := range runningTasks {
 		if (v.Branch == sourceBranch) && (v.TriggeredWorkflow == workflowID) {
-			fmt.Println("Other running task  = %s, triggered at", v.Slug, v.TriggeredAt)
-			fmt.Println("Status  = %s (%s)", v.Status, v.StatusText)
-
+			fmt.Printf("Triggered at", v.Slug, currentTriggered)
+			fmt.Println()
+			fmt.Printf("Other running task  = %s, triggered at", v.Slug, v.TriggeredAt)
+			fmt.Println()
+			fmt.Printf("Status  = %s (%s)", v.Status, v.StatusText)
+			fmt.Println()
 			abort_url := fmt.Sprintf("https://api.bitrise.io/v0.1/apps/%s/builds/%s/abort", appSlug, v.Slug)
 			req, err = http.NewRequest("POST", abort_url, bytes.NewBuffer(json))
 			req.Header.Add("Authorization", token)
